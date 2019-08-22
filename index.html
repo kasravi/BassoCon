@@ -220,6 +220,9 @@
             obxd.onMidi([0x80, 67 + i, 0]);
           },
           change: function (force, event) {
+			if(!obxd){
+              await loadSynth();
+            }
             this.style.backgroundColor='#5F674B';
             this.style.opacity = force;
             obxd.onMidi([0x90, 67 + i, Math.round(Pressure.map(force, 0, 1, 50, 127))]);

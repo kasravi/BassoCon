@@ -15,36 +15,7 @@
 
 <body onload="main()" class="body">
     <div class="wrapper">
-  <div class="controller" id="controller" style="display: none">
-    <!-- <div class="controller"> -->
-    <div id="container">
-      <div id="frontpanel"></div>
-      <div id="keys"></div>
-
-    </div>
-    <div>
-      <select id="banks" onchange="bankChange()">
-        <option>factory.fxb</option>
-        <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
-        <!-- <option>AJ- OBXD Basses.fxb</option>
-        <option>AJ- OBXD Pads.fxb</option>
-        <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
-        <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option> -->
-        <!-- <option>factory.fxb</option>
-        <option>FMR - OB-Xa Patch Book.fxb</option>
-        <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
-        <option>Joel.fxb</option>
-        <option>Kujashi-OBXD-Bank.fxb</option>
-        <option>OBXD Init Bank.fxb</option>
-        <option>OBXD - KVR Community Bank - Part 1.fxb</option>
-        <option>OBXD - KVR Community Bank - Part 2.fxb</option>
-        <option>OBXd Bank by Rin_Elyran.fxb</option>
-        <option>OBXD_AZurStudio.fxb</option>
-        <option>Xenos Soundworks.fxb</option> -->
-      </select>
-      <select id="patches" onchange="patchChange()"></select>
-    </div>
-  </div>
+  
   <div class="keys">
     <div id="first" class="center-text" >
       <div class="clip-wrap">
@@ -76,18 +47,48 @@
         </div>
         <div id="n0" class="clip-each box-shadow-inset">
         </div>
-        <svg class="clip-svg">
-            <defs>
-              <clipPath id="octagon-clip" clipPathUnits="objectBoundingBox">
-                <polygon points="0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3" />
-              </clipPath>
-            </defs>
-          </svg>
-        
       </div>
     </div>
+    <svg class="clip-svg">
+      <defs>
+        <clipPath id="octagon-clip" clipPathUnits="objectBoundingBox">
+          <polygon points="0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3" />
+        </clipPath>
+      </defs>
+    </svg>
+    <div>
+      <button onclick="load()">Load</button>
+      <select id="banks" onchange="bankChange()">
+        <option>factory.fxb</option>
+        <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
+        <!-- <option>AJ- OBXD Basses.fxb</option>
+        <option>AJ- OBXD Pads.fxb</option>
+        <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
+        <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option> -->
+        <!-- <option>factory.fxb</option>
+        <option>FMR - OB-Xa Patch Book.fxb</option>
+        <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
+        <option>Joel.fxb</option>
+        <option>Kujashi-OBXD-Bank.fxb</option>
+        <option>OBXD Init Bank.fxb</option>
+        <option>OBXD - KVR Community Bank - Part 1.fxb</option>
+        <option>OBXD - KVR Community Bank - Part 2.fxb</option>
+        <option>OBXd Bank by Rin_Elyran.fxb</option>
+        <option>OBXD_AZurStudio.fxb</option>
+        <option>Xenos Soundworks.fxb</option> -->
+      </select>
+      <select id="patches" onchange="patchChange()"></select>
+    </div>
+  </div>
+  
+  <div class="controller" id="controller" style="display: none">
+    <!-- <div class="controller"> -->
+    <div id="container" >
+      <div id="frontpanel"></div>
+      <div id="keys"></div>
+
+    </div>
     
-    <p id="log" style="color: #fff"></p>
   </div>
   </div>
 
@@ -209,23 +210,18 @@
         // el.style.left = -110+80*(Math.floor((11-i)/4))+'px';
         Pressure.set('#n' + i, {
           start: async function (event) {
-            if(!obxd){
-              await loadSynth();
-            }
-            obxd.onMidi([0x90, 67 + i, Math.round(127 * event.pressure)]);
+            (await getobxd()).onMidi([0x90, 67 + i, Math.round(127 * event.pressure)]);
           },
-          end: function () {
+          end: async function () {
             this.style.backgroundColor='#443548';
             this.style.opacity = 1;
-            obxd.onMidi([0x80, 67 + i, 0]);
+            (await getobxd()).onMidi([0x80, 67 + i, 0]);
           },
-          change: function (force, event) {
-			if(!obxd){
-              await loadSynth();
-            }
+          change: async function (force, event) {
+			      
             this.style.backgroundColor='#5F674B';
             this.style.opacity = force;
-            obxd.onMidi([0x90, 67 + i, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            (await getobxd()).onMidi([0x90, 67 + i, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
           },
           unsupported: function () {
           }
@@ -314,13 +310,19 @@
       }
     }
 
-    function play() {
-      obxd.onMidi([0x90, 67, 100]);
+    async function load() {
+      await getobxd();
     }
     function stop() {
       obxd.onMidi([0x80, 67, 100]);
     }
 
+    async function getobxd(){
+      if(!obxd){
+        await loadSynth()
+      }
+      return obxd;
+    }
     
   </script>
   </div>

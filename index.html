@@ -19,35 +19,61 @@
     <div class="keys">
       <div class="center-text">
         <div class="row">
-          <div id="n0" class="each box-shadow-inset">
+          <div id="n0" class="each-div">
+            <p id="t0" class="text"></p>
+            <div id="o0" class="each box-shadow-inset"></div>
           </div>
-          <div id="n1" class="each box-shadow-inset">
+          <div id="n1" class="each-div">
+            <p id="t1" class="text"></p>
+            <div id="o1" class="each box-shadow-inset"></div>
           </div>
-          <div id="n2" class="each box-shadow-inset">
+          <div id="n2" class="each-div">
+            <p id="t2" class="text"></p>
+            <div id="o2" class="each box-shadow-inset"></div>
           </div>
-          <div id="n3" class="each box-shadow-inset">
-          </div>
-        </div>
-        <div class="row">
-          <div id="n4" class="each box-shadow-inset">
-          </div>
-          <div id="n5" class="each box-shadow-inset">
-          </div>
-          <div id="n6" class="each box-shadow-inset">
-          </div>
-          <div id="n7" class="each box-shadow-inset">
-          </div>
-          <div id="n8" class="each box-shadow-inset">
+          <div id="n3" class="each-div">
+            <p id="t3" class="text"></p>
+            <div id="o3" class="each box-shadow-inset"></div>
           </div>
         </div>
         <div class="row">
-          <div id="n9" class="each box-shadow-inset">
+          <div id="n4" class="each-div">
+            <p id="t4" class="text"></p>
+            <div id="o4" class="each box-shadow-inset"></div>
           </div>
-          <div id="n10" class="each box-shadow-inset">
+          <div id="n5" class="each-div">
+            <p id="t5" class="text"></p>
+            <div id="o5" class="each box-shadow-inset"></div>
           </div>
-          <div id="n11" class="each box-shadow-inset">
+          <div id="n6" class="each-div">
+            <p id="t6" class="text"></p>
+            <div id="o6" class="each box-shadow-inset"></div>
           </div>
-          <div id="n12" class="each box-shadow-inset">
+          <div id="n7" class="each-div">
+            <p id="t7" class="text"></p>
+            <div id="o7" class="each box-shadow-inset"></div>
+          </div>
+          <div id="n8" class="each-div">
+            <p id="t8" class="text"></p>
+            <div id="o8" class="each box-shadow-inset"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="n9" class="each-div">
+            <p id="t9" class="text"></p>
+            <div id="o9" class="each box-shadow-inset"></div>
+          </div>
+          <div id="n10" class="each-div">
+            <p id="t10" class="text"></p>
+            <div id="o10" class="each box-shadow-inset"></div>
+          </div>
+          <div id="n11" class="each-div">
+            <p id="t11" class="text"></p>
+            <div id="o11" class="each box-shadow-inset"></div>
+          </div>
+          <div id="n12" class="each-div">
+            <p id="t12" class="text"></p>
+            <div id="o12" class="each box-shadow-inset"></div>
           </div>
         </div>
       </div>
@@ -145,19 +171,34 @@
       transform: translate(0px, 0px);
     }
 
+    .text {
+      position: absolute;
+      color: aliceblue;
+      height: 80px;
+      width: 80px;
+      z-index: 100;
+      font-size: xx-large;
+      text-align: center;
+      text-shadow: 0 0 .5em black;
+      margin-top: 22px;
+    }
+
     .row:nth-child(odd) {
       padding-top: 50px;
     }
 
-    .each:nth-child(3) {
+    .each-div:nth-child(3) {
+      position: relative;
       left: 20px;
     }
 
-    .each:nth-child(5) {
+    .each-div:nth-child(5) {
+      position: relative;
       left: -10px;
     }
 
-    .each:nth-child(1) {
+    .each-div:nth-child(1) {
+      position: relative;
       left: -20px;
     }
 
@@ -213,11 +254,13 @@
   <script>
     var obxd = undefined;
     var notes = ['C', 'D', 'G', 'Bb', 'Db', 'A', 'Gb', 'E', 'Eb', 'B', 'Ab', 'G', 'F'];
-    var notesPositions = [0, 2, 8, 11, 1, 10, 7, 4, 3, 12, 9, 8, 5]
+    var notesPositions = [0, 2, 8, 11, 1, 10, 7, 4, 3, 12, 9, 8, 5];
     async function main() {
 
       [0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12].map(i => {
-        // var el = document.getElementById("n" + i);
+        var el = document.getElementById("t" + i);
+        el.innerHTML = notes[i];
+        var o = document.getElementById("o" + i);
         // el.style.top = 20+100*((11-i)%4)+'px';
         // el.style.left = -110+80*(Math.floor((11-i)/4))+'px';
         Pressure.set('#n' + i, {
@@ -227,15 +270,15 @@
             return obxd.onMidi([0x90, note, Math.round(127 * event.pressure)]);
           },
           end: function () {
-            this.style.backgroundColor = '#443548';
-            this.style.opacity = 1;
+            o.style.backgroundColor = '#443548';
+            o.style.opacity = 1;
             let note = 67 + notesPositions[i];
             console.log(note);
             return obxd.onMidi([0x80, note, 0]);
           },
           change: function (force, event) {
-            this.style.backgroundColor = '#5F674B';
-            this.style.opacity = force;
+            o.style.backgroundColor = '#5F674B';
+            o.style.opacity = force;
             let note = 67 + notesPositions[i];
             console.log(note);
             return obxd.onMidi([0x90, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);

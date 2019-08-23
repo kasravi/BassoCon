@@ -14,58 +14,60 @@
 </head>
 
 <body onload="main()" class="body">
-    <div class="wrapper">
-  
-  <div class="keys">
-    <div id="first" class="center-text" >
-      <div class="clip-wrap">
-        <div id="n11" class="clip-each box-shadow-inset">
+  <div class="wrapper">
+
+    <div class="keys">
+      <div class="center-text">
+        <div class="row">
+          <div id="n0" class="each box-shadow-inset">
+          </div>
+          <div id="n1" class="each box-shadow-inset">
+          </div>
+          <div id="n2" class="each box-shadow-inset">
+          </div>
+          <div id="n3" class="each box-shadow-inset">
+          </div>
         </div>
-        <div id="n10" class="clip-each box-shadow-inset">
+        <div class="row">
+          <div id="n4" class="each box-shadow-inset">
+          </div>
+          <div id="n5" class="each box-shadow-inset">
+          </div>
+          <div id="n6" class="each box-shadow-inset">
+          </div>
+          <div id="n7" class="each box-shadow-inset">
+          </div>
+          <div id="n8" class="each box-shadow-inset">
+          </div>
         </div>
-        <div id="n9" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n8" class="clip-each box-shadow-inset">
+        <div class="row">
+          <div id="n9" class="each box-shadow-inset">
+          </div>
+          <div id="n10" class="each box-shadow-inset">
+          </div>
+          <div id="n11" class="each box-shadow-inset">
+          </div>
+          <div id="n12" class="each box-shadow-inset">
+          </div>
         </div>
       </div>
-      <div class="clip-wrap">
-        <div id="n7" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n6" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n5" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n4" class="clip-each box-shadow-inset">
-        </div>
-      </div>
-      <div class="clip-wrap">
-        <div id="n3" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n2" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n1" class="clip-each box-shadow-inset">
-        </div>
-        <div id="n0" class="clip-each box-shadow-inset">
-        </div>
-      </div>
-    </div>
-    <svg class="clip-svg">
-      <defs>
-        <clipPath id="octagon-clip" clipPathUnits="objectBoundingBox">
-          <polygon points="0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3" />
-        </clipPath>
-      </defs>
-    </svg>
-    <div>
-      <button onclick="load()">Load</button>
-      <select id="banks" onchange="bankChange()">
-        <option>factory.fxb</option>
-        <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
-        <!-- <option>AJ- OBXD Basses.fxb</option>
+      <svg class="clip-svg">
+        <defs>
+          <clipPath id="octagon-clip" clipPathUnits="objectBoundingBox">
+            <polygon points="0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3" />
+          </clipPath>
+        </defs>
+      </svg>
+      <div>
+        <button onclick="load()">Load</button>
+        <select id="banks" onchange="bankChange()">
+          <option>factory.fxb</option>
+          <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
+          <!-- <option>AJ- OBXD Basses.fxb</option>
         <option>AJ- OBXD Pads.fxb</option>
         <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
         <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option> -->
-        <!-- <option>factory.fxb</option>
+          <!-- <option>factory.fxb</option>
         <option>FMR - OB-Xa Patch Book.fxb</option>
         <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
         <option>Joel.fxb</option>
@@ -76,20 +78,20 @@
         <option>OBXd Bank by Rin_Elyran.fxb</option>
         <option>OBXD_AZurStudio.fxb</option>
         <option>Xenos Soundworks.fxb</option> -->
-      </select>
-      <select id="patches" onchange="patchChange()"></select>
+        </select>
+        <select id="patches" onchange="patchChange()"></select>
+      </div>
     </div>
-  </div>
-  
-  <div class="controller" id="controller" style="display: none">
-    <!-- <div class="controller"> -->
-    <div id="container" >
-      <div id="frontpanel"></div>
-      <div id="keys"></div>
+
+    <div class="controller" id="controller" style="display: none">
+      <!-- <div class="controller"> -->
+      <div id="container">
+        <div id="frontpanel"></div>
+        <div id="keys"></div>
+
+      </div>
 
     </div>
-    
-  </div>
   </div>
 
   <style>
@@ -115,7 +117,7 @@
       background-color: #1E1720;
       margin: 0px;
     }
-    
+
     .center-text {
       text-align: center;
     }
@@ -125,14 +127,14 @@
       height: 0;
     }
 
-    .clip-wrap {
+    .row {
       filter: blur(3px) drop-shadow(0 0 10px #443548);
       display: inline-block;
       vertical-align: top;
       padding: 10px;
     }
 
-    .clip-each {
+    .each {
       width: 80px;
       height: 80px;
       position: relative;
@@ -140,31 +142,39 @@
       touch-action: none;
       user-select: none;
       -webkit-transform: translate(0px, 0px);
-              transform: translate(0px, 0px);
+      transform: translate(0px, 0px);
     }
 
-    .clip-each:nth-child(3) {
-      left: -20px;
+    .row:nth-child(odd) {
+      padding-top: 50px;
     }
 
-    .clip-each:nth-child(1) {
+    .each:nth-child(3) {
       left: 20px;
     }
 
-    .clip-each:after {
+    .each:nth-child(5) {
+      left: -10px;
+    }
+
+    .each:nth-child(1) {
+      left: -20px;
+    }
+
+    .each:after {
       content: "";
       position: absolute;
       background: #fff;
     }
 
-    .clip-each,
-    .clip-each:after {
+    .each,
+    .each:after {
       -webkit-clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
       clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
       clip-path: url("#octagon-clip");
     }
 
-    .clip-each.active {
+    .each.active {
       background-color: #5F674B;
     }
 
@@ -202,69 +212,70 @@
   </style>
   <script>
     var obxd = undefined;
+    var notes = ['C', 'D', 'G', 'Bb', 'Db', 'A', 'Gb', 'E', 'Eb', 'B', 'Ab', 'G', 'F'];
+    var notesPositions = [0, 2, 8, 11, 1, 10, 7, 4, 3, 12, 9, 8, 5]
     async function main() {
 
-      [11,10,9,8,7,6,5,4,3,2,1,0].map(i => {
+      [0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12].map(i => {
         // var el = document.getElementById("n" + i);
         // el.style.top = 20+100*((11-i)%4)+'px';
         // el.style.left = -110+80*(Math.floor((11-i)/4))+'px';
         Pressure.set('#n' + i, {
-          start: async function (event) {
-            (await getobxd()).onMidi([0x90, 67 + i, Math.round(127 * event.pressure)]);
+          start: function (event) {
+            return obxd.onMidi([0x90, 67 + notesPositions[i], Math.round(127 * event.pressure)]);
           },
-          end: async function () {
-            this.style.backgroundColor='#443548';
+          end: function () {
+            this.style.backgroundColor = '#443548';
             this.style.opacity = 1;
-            (await getobxd()).onMidi([0x80, 67 + i, 0]);
+            return obxd.onMidi([0x80, 67 + notesPositions[i], 0]);
           },
-          change: async function (force, event) {
-			      
-            this.style.backgroundColor='#5F674B';
+          change: function (force, event) {
+            this.style.backgroundColor = '#5F674B';
             this.style.opacity = force;
-            (await getobxd()).onMidi([0x90, 67 + i, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            return obxd.onMidi([0x90, 67 + notesPositions[i], Math.round(Pressure.map(force, 0, 1, 50, 127))]);
           },
           unsupported: function () {
           }
         });
       });
 
-      interact('.clip-each')
-      .draggable({
-        inertia: true,
-        modifiers: [
-          interact.modifiers.restrictRect({
-            restriction: 'parent',
-            endOnly: true
-          })
-        ],
-        autoScroll: true,
-        onmove: dragMoveListener,
-        onend: function (event) {
-          var target = event.target;
-          target.style.webkitTransform =
-          target.style.transform =
-            'translate(' + 0 + 'px, ' + 0 + 'px)';
-          target.setAttribute('data-x', 0)
-          target.setAttribute('data-y', 0)
-        }
-      })
-      function dragMoveListener (event) {
+      interact('.each')
+        .draggable({
+          inertia: true,
+          modifiers: [
+            interact.modifiers.restrictRect({
+              restriction: 'parent',
+              endOnly: true
+            })
+          ],
+          autoScroll: true,
+          onmove: dragMoveListener,
+          onend: function (event) {
+            var target = event.target;
+            target.style.webkitTransform =
+              target.style.transform =
+              'translate(' + 0 + 'px, ' + 0 + 'px)';
+            target.setAttribute('data-x', 0)
+            target.setAttribute('data-y', 0)
+          }
+        })
+      function dragMoveListener(event) {
         var target = event.target
         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
         var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
 
         target.style.webkitTransform =
           target.style.transform =
-            'translate(' + x + 'px, ' + y + 'px)'
+          'translate(' + x + 'px, ' + y + 'px)'
 
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
       }
     }
-    
-    
 
-    async function loadSynth(){
+
+
+    async function loadSynth() {
       let actx = new AudioContext();
 
       await WAM.OBXD.importScripts(actx);
@@ -288,7 +299,7 @@
       }
       await obxd.loadBank("presets/factory.fxb");
       loadPatches();
-      obxd.selectPatch(15);
+      obxd.selectPatch(8);
     }
     async function bankChange() {
       var x = document.getElementById("banks").value;
@@ -311,19 +322,12 @@
     }
 
     async function load() {
-      await getobxd();
+      await loadSynth()
     }
     function stop() {
       obxd.onMidi([0x80, 67, 100]);
     }
 
-    async function getobxd(){
-      if(!obxd){
-        await loadSynth()
-      }
-      return obxd;
-    }
-    
   </script>
   </div>
 </body>

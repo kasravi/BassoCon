@@ -222,17 +222,23 @@
         // el.style.left = -110+80*(Math.floor((11-i)/4))+'px';
         Pressure.set('#n' + i, {
           start: function (event) {
-            return obxd.onMidi([0x90, 67 + notesPositions[i], Math.round(127 * event.pressure)]);
+            let note = 67 + notesPositions[i];
+            console.log(note);
+            return obxd.onMidi([0x90, note, Math.round(127 * event.pressure)]);
           },
           end: function () {
             this.style.backgroundColor = '#443548';
             this.style.opacity = 1;
-            return obxd.onMidi([0x80, 67 + notesPositions[i], 0]);
+            let note = 67 + notesPositions[i];
+            console.log(note);
+            return obxd.onMidi([0x80, note, 0]);
           },
           change: function (force, event) {
             this.style.backgroundColor = '#5F674B';
             this.style.opacity = force;
-            return obxd.onMidi([0x90, 67 + notesPositions[i], Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            let note = 67 + notesPositions[i];
+            console.log(note);
+            return obxd.onMidi([0x90, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
           },
           unsupported: function () {
           }

@@ -165,10 +165,7 @@
       height: 80px;
       position: relative;
       margin-bottom: 20px;
-      touch-action: none;
-      user-select: none;
-      -webkit-transform: translate(0px, 0px);
-      transform: translate(0px, 0px);
+      
     }
 
     .text {
@@ -187,18 +184,23 @@
       padding-top: 50px;
     }
 
-    .each-div:nth-child(3) {
+    .each-div{
       position: relative;
+      touch-action: none;
+      user-select: none;
+      -webkit-transform: translate(0px, 0px);
+      transform: translate(0px, 0px);
+    }
+
+    .each-div:nth-child(3) {
       left: 20px;
     }
 
     .each-div:nth-child(5) {
-      position: relative;
       left: -10px;
     }
 
     .each-div:nth-child(1) {
-      position: relative;
       left: -20px;
     }
 
@@ -253,8 +255,8 @@
   </style>
   <script>
     var obxd = undefined;
-    var notes = ['C', 'D', 'G', 'Bb', 'Db', 'A', 'Gb', 'E', 'Eb', 'B', 'Ab', 'G', 'F'];
-    var notesPositions = [0, 2, 8, 11, 1, 10, 7, 4, 3, 12, 9, 8, 5];
+    var notes = ['C', 'E', 'G', 'B', 'Db', 'A', 'F', 'D', 'Eb', 'Bb', 'Ab', 'G', 'Gb'];
+    var notesPositions = [0, 4, 7, 11, 1, 9, 5, 2, 3, 10, 8, 7, 6];
     async function main() {
 
       [0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12].map(i => {
@@ -265,21 +267,21 @@
         // el.style.left = -110+80*(Math.floor((11-i)/4))+'px';
         Pressure.set('#n' + i, {
           start: function (event) {
-            let note = 67 + notesPositions[i];
+            let note = 48 + notesPositions[i];
             console.log(note);
             return obxd.onMidi([0x90, note, Math.round(127 * event.pressure)]);
           },
           end: function () {
             o.style.backgroundColor = '#443548';
             o.style.opacity = 1;
-            let note = 67 + notesPositions[i];
+            let note = 48 + notesPositions[i];
             console.log(note);
             return obxd.onMidi([0x80, note, 0]);
           },
           change: function (force, event) {
             o.style.backgroundColor = '#5F674B';
             o.style.opacity = force;
-            let note = 67 + notesPositions[i];
+            let note = 48 + notesPositions[i];
             console.log(note);
             return obxd.onMidi([0x90, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
           },

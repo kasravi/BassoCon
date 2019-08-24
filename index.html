@@ -109,6 +109,8 @@
         <option>Xenos Soundworks.fxb</option> -->
         </select>
         <select id="patches" onchange="patchChange()"></select>
+        <button onclick="n1()">nnn1</button>
+        <button onclick="n2()">nnn2</button>
       </div>
     </div>
 
@@ -291,7 +293,7 @@
             o.style.backgroundColor = '#5F674B';
             o.style.opacity = force;
             let note = 48 + notesPositions[i];
-            return obxd.onMidi([0x90, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            return obxd.onMidi([0xa0, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
           },
           unsupported: function () {
           }
@@ -385,9 +387,13 @@
     async function load() {
       await loadSynth()
     }
-    function stop() {
-      obxd.onMidi([0x80, 67, 100]);
+    function n1() {
+      obxd.onMidi([0x90, 47, 100]);
     }
+    function n2() {
+      obxd.onMidi([0x90, 60, 100]);
+    }
+
 
   </script>
   </div>

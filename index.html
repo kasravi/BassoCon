@@ -165,7 +165,7 @@
       height: 80px;
       position: relative;
       margin-bottom: 20px;
-      
+
     }
 
     .text {
@@ -184,7 +184,7 @@
       padding-top: 50px;
     }
 
-    .each-div{
+    .each-div {
       position: relative;
       touch-action: none;
       user-select: none;
@@ -289,40 +289,42 @@
           }
         });
       });
+      [0, 1, 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12].map(i => {
+        interact('#n' + i)
+          .draggable({
+            inertia: true,
+            modifiers: [
+              interact.modifiers.restrictRect({
+                restriction: 'parent',
+                endOnly: true
+              })
+            ],
+            autoScroll: true,
+            onmove: dragMoveListener,
+            onend: function (event) {
+              var target = event.target;
+              target.style.webkitTransform =
+                target.style.transform =
+                'translate(' + 0 + 'px, ' + 0 + 'px)';
+              target.setAttribute('data-x', 0)
+              target.setAttribute('data-y', 0)
+            }
+          })
+        function dragMoveListener(event) {
+          var target = event.target
+          var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+          var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
 
-      interact('.each-div')
-        .draggable({
-          inertia: true,
-          modifiers: [
-            interact.modifiers.restrictRect({
-              restriction: 'parent',
-              endOnly: true
-            })
-          ],
-          autoScroll: true,
-          onmove: dragMoveListener,
-          onend: function (event) {
-            var target = event.target;
-            target.style.webkitTransform =
-              target.style.transform =
-              'translate(' + 0 + 'px, ' + 0 + 'px)';
-            target.setAttribute('data-x', 0)
-            target.setAttribute('data-y', 0)
-          }
-        })
-      function dragMoveListener(event) {
-        var target = event.target
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+          target.style.webkitTransform =
+            target.style.transform =
+            'translate(' + x + 'px, ' + y + 'px)'
 
-        target.style.webkitTransform =
-          target.style.transform =
-          'translate(' + x + 'px, ' + y + 'px)'
-
-        target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
-      }
+          target.setAttribute('data-x', x)
+          target.setAttribute('data-y', y)
+        }
+      })
     }
+
 
 
 

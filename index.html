@@ -75,40 +75,44 @@
             <p id="t12" class="text"></p>
             <div id="o12" class="each box-shadow-inset"></div>
           </div>
+          <div id="load" class="each-div load">
+            <p class="text" onclick="load()">Load</p>
+            <div class="each box-shadow-inset"></div>
+          </div>
+        </div>
+        <div>
+
+          <select class="each box-shadow-inset" id="banks" onchange="bankChange()">
+            <option>factory.fxb</option>
+            <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
+            <!-- <option>AJ- OBXD Basses.fxb</option>
+           <option>AJ- OBXD Pads.fxb</option>
+           <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
+           <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option> -->
+            <!-- <option>factory.fxb</option>
+           <option>FMR - OB-Xa Patch Book.fxb</option>
+           <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
+           <option>Joel.fxb</option>
+           <option>Kujashi-OBXD-Bank.fxb</option>
+           <option>OBXD Init Bank.fxb</option>
+           <option>OBXD - KVR Community Bank - Part 1.fxb</option>
+           <option>OBXD - KVR Community Bank - Part 2.fxb</option>
+           <option>OBXd Bank by Rin_Elyran.fxb</option>
+           <option>OBXD_AZurStudio.fxb</option>
+           <option>Xenos Soundworks.fxb</option> -->
+          </select>
+          <select class="each box-shadow-inset" id="patches" onchange="patchChange()"></select>
         </div>
       </div>
-      <svg class="clip-svg">
-        <defs>
-          <clipPath id="octagon-clip" clipPathUnits="objectBoundingBox">
-            <polygon points="0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3" />
-          </clipPath>
-        </defs>
-      </svg>
-      <div>
-
-        <button onclick="load()">Load</button>
-        <select id="banks" onchange="bankChange()">
-          <option>factory.fxb</option>
-          <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
-          <!-- <option>AJ- OBXD Basses.fxb</option>
-        <option>AJ- OBXD Pads.fxb</option>
-        <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
-        <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option> -->
-          <!-- <option>factory.fxb</option>
-        <option>FMR - OB-Xa Patch Book.fxb</option>
-        <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
-        <option>Joel.fxb</option>
-        <option>Kujashi-OBXD-Bank.fxb</option>
-        <option>OBXD Init Bank.fxb</option>
-        <option>OBXD - KVR Community Bank - Part 1.fxb</option>
-        <option>OBXD - KVR Community Bank - Part 2.fxb</option>
-        <option>OBXd Bank by Rin_Elyran.fxb</option>
-        <option>OBXD_AZurStudio.fxb</option>
-        <option>Xenos Soundworks.fxb</option> -->
-        </select>
-        <select id="patches" onchange="patchChange()"></select>
-      </div>
     </div>
+    <svg class="clip-svg">
+      <defs>
+        <clipPath id="octagon-clip" clipPathUnits="objectBoundingBox">
+          <polygon points="0.3 0, 0.7 0, 1 0.3, 1 0.7, 0.7 1, 0.3 1, 0 0.7, 0 0.3" />
+        </clipPath>
+      </defs>
+    </svg>
+
 
     <div class="controller" id="controller" style="display: none">
       <!-- <div class="controller"> -->
@@ -143,6 +147,25 @@
     body {
       background-color: #1E1720;
       margin: 0px;
+    }
+
+    #banks {
+      top: -40px;
+      left: -90px;
+    }
+
+    #patches {
+      top: -40px;
+      left: 90px;
+    }
+
+    .load {
+      position: absolute !important;
+      top: 240px;
+      right: -50px;
+
+      -webkit-transform: scale(3, 3) !important;
+      transform: scale(3, 3) !important;
     }
 
     .center-text {
@@ -364,6 +387,7 @@
     function loadPatches() {
       var array = obxd.patches;
       var patchList = document.getElementById("patches");
+      patchList.innerHTML = '';
       for (var i = 0; i < array.length; i++) {
         var option = document.createElement("option");
         option.value = i;
@@ -373,7 +397,9 @@
     }
 
     async function load() {
-      await loadSynth()
+      await loadSynth();
+      var el = document.getElementById("load");
+      el.style.display = "none";
     }
   </script>
   </div>

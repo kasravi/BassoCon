@@ -48,11 +48,11 @@ self.addEventListener('activate', function (e) {
     );
 });
 
-function distinct(value,index,self){
+function distinct(value, index, self) {
     return self.indexOf(value) === index;
 }
 var getVersionPort;
-var notes = [], recNotes=[];
+var notes = [], recNotes = [];
 var arrpeg = false;
 var pressure = 0;
 var tempo = 69;
@@ -75,7 +75,7 @@ self.addEventListener("message", event => {
                 }
                 recNotes.push(note);
                 //recNotes.push(note+1);
-                recNotes = recNotes.filter(distinct).sort((a,b)=>a>b?1:-1);
+                recNotes = recNotes.filter(distinct).sort((a, b) => a > b ? 1 : -1);
                 pressure = event.data.payload.pressure;
                 play();
                 break;
@@ -86,12 +86,12 @@ self.addEventListener("message", event => {
                 if (type === 'n') {
                     note = parseInt(spl[1]);
                 }
-                recNotes.splice(recNotes.indexOf(notes),1)
+                recNotes.splice(recNotes.indexOf(notes), 1)
                 play()
                 break;
             case 'control':
                 var id = event.data.payload.id.split('-')[1];
-                switch(id){
+                switch (id) {
                     case 'A':
                         arrpeg = !arrpeg;
                         break;
@@ -107,49 +107,54 @@ function wait(s) {
     return new Promise((resolve) => setTimeout(resolve, s * 1000))
 }
 
-function isEqaul(a,b){
-    if(a.length!==b.length) return false;
-    return !a.some((f,i)=>f!==b[i])
+function isEqaul(a, b) {
+    if (a.length !== b.length) return false;
+    return !a.some((f, i) => f !== b[i])
 }
 
 function play() {
 
-    if(recNotes.length>0){
+    if (recNotes.length > 0) {
         var t = [];
-        if(recNotes.length === 2){
-            t.push(recNotes[0] + base);
-            t.push(recNotes[0] + base + 3);
-            t.push(recNotes[0] + base + 7);
-        }else if(recNotes.length === 1){
-            t.push(recNotes[0] + base);
-            t.push(recNotes[0] + base + 4);
-            t.push(recNotes[0] + base + 7);
+        for (let i = -12; i < 13; i += 12) {
+            if (recNotes.length === 2) {
+                t.push(recNotes[0] + base + i);
+                t.push(recNotes[0] + base + i + 3);
+                t.push(recNotes[0] + base + i + 7);
+
+            } else if (recNotes.length === 1) {
+                t.push(recNotes[0] + base + i);
+                t.push(recNotes[0] + base + i + 4);
+                t.push(recNotes[0] + base + i + 7);
+            }
         }
-        if(!isEqaul(notes,t)){
+        if (!isEqaul(notes, t)) {
             stop();
             notes = t;
             if (!arrpeg) {
-                notes.forEach((note) => getVersionPort.postMessage({ type: 'on', payload: { note, pressure } }))
+                notes.sort((a, b) => a > b ? -1 : 1)
+                    .forEach((note) => getVersionPort
+                        .postMessage({ type: 'on', payload: { note, pressure } }))
             } else {
-                if(arrpegTimer){
+                if (arrpegTimer) {
                     clearTimeout(arrpegTimer);
                 }
                 arrpegiate()
             }
         }
-    }else{
+    } else {
         stop();
     }
 }
 
 var patterns = [
-    { name: "", pattern: [{ on: [0, 1, 2,3 ,4], off: [0, 1, 2,3,4], t: 1 }] },
-    { name: "", pattern: [{ on: [0, 1, 2,3 ,4], t: 1 }] },
-    { name: "", pattern: [{ on: [0], t: 2 },{ on: [1],off:[1,2], t: 1 },{ on: [0],off:[1,2], t: 1 }] }
+    { name: "", pattern: [{ on: [0, 1, 2, 3, 4], off: [0, 1, 2, 3, 4], t: 1 }] },
+    { name: "", pattern: [{ on: [0, 1, 2, 3, 4], t: 1 }] },
+    { name: "", pattern: [{ on: [0,3,6], t: 1 }, { on: [1,4,7], off: [1, 2,4,5,7,9], t: 0.5 }, { on: [2,5,8], off: [1, 2,4,5,7,9], t: 0.5 }] }
 ]
 
-function stop(){
-    if(arrpegTimer){
+function stop() {
+    if (arrpegTimer) {
         clearTimeout(arrpegTimer);
     }
     notes.forEach((note) => getVersionPort.postMessage({ type: 'off', payload: { note } }));
@@ -162,7 +167,7 @@ function arrpegiate(i) {
         stop();
         return;
     }
-    
+
     var p = patterns[currentPat];
     i = (i || 0) % p.pattern.length;
     (p.pattern[i].off || [...Array(notes.length).keys()]).forEach(i => {

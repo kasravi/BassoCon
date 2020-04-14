@@ -1,4 +1,5 @@
-var notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+var notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 var controls = ['L', 'P', 'B', 'A', '1', '2', '3', '4'];
 var root = document.getElementById("root");
 var keyWidth = (window.innerWidth - 10) / 4, keyHeight = window.innerHeight / 8;
@@ -61,14 +62,14 @@ function render() {
         f.style.height = keyHeight + 'px';
     })
 }
-var count = 4;
+var count = 3;
 for (let row = 0; row < 3; row++) {
     var keyrow = document.getElementById(`key-row-${row}`)
     for (let note = 0; note < 8; note++) {
-        var name = notes[(48 + count) % 12]
+        var name = notes[(36 + count) % 24]
         var div = document.createElement('div');
         div.className = 'but';
-        div.id = 'n-' + ((48 + count) % 12)
+        div.id = 'n-' + ((36 + count) % 24)
         var p = document.createElement('p');
         p.innerHTML = name;
         div.appendChild(p)
@@ -207,7 +208,7 @@ async function loadSynth() {
     }
     await obxd.loadBank("presets/factory.fxb");
     loadPatches();
-    obxd.selectPatch(8);
+    obxd.selectPatch(20);
 }
 async function bankChange() {
     var x = document.getElementById("banks").value;

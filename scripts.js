@@ -28,7 +28,7 @@ window.addEventListener('load', async e => {
 
     messageChannel1.port1.onmessage = (event) => {
         if (event.data.type === 'on') {
-            console.log(event.data.payload.note)
+            //console.log(event.data.payload.note)
             obxd.onMidi([0x90, event.data.payload.note, Math.round(127 * event.data.payload.pressure)]);
         }
         if (event.data.type === 'off') {
@@ -69,7 +69,7 @@ for (let row = 0; row < 3; row++) {
         var name = notes[(36 + count) % 24]
         var div = document.createElement('div');
         div.className = 'but';
-        div.id = 'n-' + ((36 + count) % 24)
+        div.id = 'n-' +(note+row*8+'-')+ ((36 + count) % 24)
         var p = document.createElement('p');
         p.innerHTML = name;
         div.appendChild(p)

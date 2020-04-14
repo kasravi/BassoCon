@@ -51,6 +51,24 @@ self.addEventListener('activate', function (e) {
 function distinct(value, index, self) {
     return self.indexOf(value) === index;
 }
+
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this,
+        args = arguments;
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        timeout = null;
+        if (!immediate) {
+          func.apply(context, args);
+        }
+      }, wait);
+      if (callNow) func.apply(context, args);
+    }
+  }
+
 var getVersionPort;
 var notes = [], recNotes = [];
 var arrpeg = false;
@@ -68,24 +86,16 @@ self.addEventListener("message", event => {
                 break;
             case 'on':
                 var spl = event.data.payload.id.split('-');
-                var note;
-                var type = spl[0];
-                if (type === 'n') {
-                    note = parseInt(spl[1]);
-                }
+                var note = parseInt(spl[2]);
                 recNotes.push(note);
-                //recNotes.push(note+1);
                 recNotes = recNotes.filter(distinct).sort((a, b) => a > b ? 1 : -1);
                 pressure = event.data.payload.pressure;
+
                 play();
                 break;
             case 'off':
                 var spl = event.data.payload.id.split('-');
-                var note;
-                var type = spl[0];
-                if (type === 'n') {
-                    note = parseInt(spl[1]);
-                }
+                var note = parseInt(spl[2]);
                 recNotes.splice(recNotes.indexOf(notes), 1)
                 play()
                 break;
@@ -112,8 +122,9 @@ function isEqaul(a, b) {
     return !a.some((f, i) => f !== b[i])
 }
 
-function play() {
+var play = debounce(playDebounced, 100);
 
+function playDebounced() {
     if (recNotes.length > 0) {
         var t = [];
         for (let i = -12; i < 13; i += 12) {

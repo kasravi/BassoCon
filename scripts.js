@@ -1,5 +1,19 @@
-var notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
-'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+var noteNameMap={
+    0:'C',
+    1:'C#/Db',
+    2:'D',
+    3:'D#/Eb',
+    4:'E',
+    5:'F',
+    6:'F#/Gb',
+    7:'G',
+    8:'G#/Ab',
+    9:'A',
+    10:'A#/Bb',
+    11:'B'}
+
+var placements = [11, 6, 1, 8, 3, 10, 2, 5, 9, 0, 4, 7]
+
 var controls = ['L', 'P', 'B', 'A', '1', '2', '3', '4'];
 var root = document.getElementById("root");
 var keyWidth = (window.innerWidth - 10) / 4, keyHeight = window.innerHeight / 8;
@@ -62,21 +76,25 @@ function render() {
         f.style.height = keyHeight + 'px';
     })
 }
-var count = 3;
-for (let row = 0; row < 3; row++) {
+var count = 0;
+for (let row = 2; row >= 0; row--) {
     var keyrow = document.getElementById(`key-row-${row}`)
-    for (let note = 0; note < 8; note++) {
-        var name = notes[(36 + count) % 24]
+    for (let note = 7; note >= 0; note--) {
+        var name = noteNameMap[(36 + placements[count]) % 12]
         var div = document.createElement('div');
         div.className = 'but';
-        div.id = 'n-' +(note+row*8+'-')+ ((36 + count) % 24)
+        div.id = 'n-' +(note+row*8+'-')+ ((36 + placements[count]))
         var p = document.createElement('p');
         p.innerHTML = name;
         div.appendChild(p)
-        keyrow.appendChild(div)
-        count--;
+        keyrow.prepend(div)
+        count+=1;
+        count%=placements.length
     }
-    count += 4;
+    count -= 3;
+    if(count<0){
+        count+=12
+    }
 }
 
 var keyrow = document.getElementById(`controls`)

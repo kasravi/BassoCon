@@ -127,18 +127,12 @@ var play = debounce(playDebounced, 100);
 function playDebounced() {
     if (recNotes.length > 0) {
         var t = [];
-        for (let i = -12; i < 13; i += 12) {
-            if (recNotes.length === 2) {
-                t.push(recNotes[0] + base + i);
-                t.push(recNotes[0] + base + i + 3);
-                t.push(recNotes[0] + base + i + 7);
+        recNotes.forEach(recNote=>{
+            for (let i = -12; i < 13; i += 12) {
+                    t.push(recNote + i);
 
-            } else if (recNotes.length === 1) {
-                t.push(recNotes[0] + base + i);
-                t.push(recNotes[0] + base + i + 4);
-                t.push(recNotes[0] + base + i + 7);
             }
-        }
+        })
         if (!isEqaul(notes, t)) {
             stop();
             notes = t;

@@ -12,7 +12,21 @@ var noteNameMap={
     10:'A#/Bb',
     11:'B'}
 
-var placements = [11, 6, 1, 8, 3, 10, 2, 5, 9, 0, 4, 7]
+var placementsNotes = ['B', 'Gb', 'Eb', 'Bb', 'A', 'Db', 'F', 'Ab', 
+'C', 'E', 'G', 'B', 'D', 'Gb', 'Db', 'Bb', 'D', 'F', 'A', 'C', 'E', 'G'] 
+
+function objectFlip(obj) {
+    return Object.entries(obj).reduce((ret, entry) => {
+      const [ key, value ] = entry;
+      var s = value.split('/')
+      s.forEach(f=>
+      ret[ f ] = key)
+      return ret;
+    }, {});
+  }
+var noteNameMapFlip = objectFlip(noteNameMap);
+
+var placements = placementsNotes.map(f=>parseInt(noteNameMapFlip[f]));
 
 var controls = ['L', 'P', 'B', 'A', '1', '2', '3', '4'];
 var root = document.getElementById("root");
@@ -91,7 +105,7 @@ for (let row = 2; row >= 0; row--) {
         count+=1;
         count%=placements.length
     }
-    count -= 3;
+    count -= 1;
     if(count<0){
         count+=12
     }

@@ -134,13 +134,14 @@ function playDebounced() {
             }
         })
         if (!isEqaul(notes, t)) {
-            stop();
-            notes = t;
+            
             if (!arrpeg) {
-                notes.sort((a, b) => a > b ? -1 : 1)
+                t.filter(note=>!notes.includes(note)).sort((a, b) => a > b ? -1 : 1)
                     .forEach((note) => getVersionPort
                         .postMessage({ type: 'on', payload: { note, pressure } }))
+                notes = t;
             } else {
+                notes = t;
                 if (arrpegTimer) {
                     clearTimeout(arrpegTimer);
                 }

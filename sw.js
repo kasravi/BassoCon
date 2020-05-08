@@ -122,9 +122,9 @@ function isEqaul(a, b) {
     return !a.some((f, i) => f !== b[i])
 }
 
-var play = debounce(playDebounced, 100);
+// var play = debounce(playDebounced, 100);
 
-function playDebounced() {
+function play() {
     if (recNotes.length > 0) {
         var t = [];
         recNotes.forEach(recNote=>{
@@ -136,9 +136,9 @@ function playDebounced() {
         if (!isEqaul(notes, t)) {
             
             if (!arrpeg) {
-                t.filter(note=>!notes.includes(note)).sort((a, b) => a > b ? -1 : 1)
+                t.sort((a, b) => a > b ? -1 : 1)
                     .forEach((note) => getVersionPort
-                        .postMessage({ type: 'on', payload: { note, pressure } }))
+                        .postMessage({ type: !notes.includes(note)?'on':'off', payload: { note, pressure } }))
                 notes = t;
             } else {
                 notes = t;

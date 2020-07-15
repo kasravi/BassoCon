@@ -45,28 +45,28 @@ async function registerSW() {
         document.querySelector('.alert').removeAttribute('hidden');
     }
 }
-window.addEventListener('load', async e => {
-    sw = await registerSW();
+// window.addEventListener('load', async e => {
+//     sw = await registerSW();
 
-    const messageChannel1 = new MessageChannel();
+//     const messageChannel1 = new MessageChannel();
 
-    navigator.serviceWorker.controller.postMessage({
-        type: 'INIT_PORT',
-    }, [messageChannel1.port2]);
+//     navigator.serviceWorker.controller.postMessage({
+//         type: 'INIT_PORT',
+//     }, [messageChannel1.port2]);
 
-    messageChannel1.port1.onmessage = (event) => {
-        if (event.data.type === 'on') {
-            //console.log(event.data.payload.note)
-            obxd.onMidi([0x90, event.data.payload.note, Math.round(127 * event.data.payload.pressure)]);
-        }
-        if (event.data.type === 'off') {
-            obxd.onMidi([0x80, event.data.payload.note, 0]);
-        }
-        if (event.data.type === 'change') {
-            obxd.onMidi([0xa0, event.data.payload.note, Math.round(Pressure.map(event.data.payload.pressure, 0, 1, 50, 127))]);
-        }
-    };
-});
+//     messageChannel1.port1.onmessage = (event) => {
+//         if (event.data.type === 'on') {
+//             //console.log(event.data.payload.note)
+//             obxd.onMidi([0x90, event.data.payload.note, Math.round(127 * event.data.payload.pressure)]);
+//         }
+//         if (event.data.type === 'off') {
+//             obxd.onMidi([0x80, event.data.payload.note, 0]);
+//         }
+//         if (event.data.type === 'change') {
+//             obxd.onMidi([0xa0, event.data.payload.note, Math.round(Pressure.map(event.data.payload.pressure, 0, 1, 50, 127))]);
+//         }
+//     };
+// });
 
 function post(type, id, pressure) {
     var messageChannel = new MessageChannel();
@@ -125,23 +125,30 @@ for (let control = 7; control >= 0; control--) {
     div.appendChild(p)
     if (name === "P") {
         div.innerHTML += `<select id="banks" onchange="bankChange()">
-            <option>factory.fxb</option>
-            <option>Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb</option>
-            <!-- <option>AJ- OBXD Basses.fxb</option>
-           <option>AJ- OBXD Pads.fxb</option>
-           <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
-           <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option> -->
-            <!-- <option>factory.fxb</option>
-           <option>FMR - OB-Xa Patch Book.fxb</option>
-           <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
-           <option>Joel.fxb</option>
-           <option>Kujashi-OBXD-Bank.fxb</option>
-           <option>OBXD Init Bank.fxb</option>
-           <option>OBXD - KVR Community Bank - Part 1.fxb</option>
-           <option>OBXD - KVR Community Bank - Part 2.fxb</option>
+            <option value="factory.fxb">factory</option>
+            <option value="Designer/Breeze_Meat-n-Potatoes_Obxd-Bank.fxb">Breeze</option>
+           <option value="Designer/FMR - OB-Xa Patch Book.fxb">FMR</option>
+           <option value="Designer/Kujashi-OBXD-Bank.fxb">Kujashi</option>
+           <option value="Designer/OBXD - KVR Community Bank - Part 1.fxb">KVR Part 1</option>
+           <option value="Designer/OBXD - KVR Community Bank - Part 2.fxb">KVR Part 2</option>
+           <option value="Category/OBXD KVR Bank - Bass.fxb">Bass</option>
+           <option value="Category/OBXD KVR Bank - Brass + Synths.fxb">Brass + Synths</option>
+           <option value="Category/OBXD KVR Bank - Drums + Percussion + SFXs.fxb">Drums + Percussion + SFXs</option>
+           <option value="Category/OBXD KVR Bank - Keys + Bells + Plucked.fxb">Keys + Bells + Plucked</option>
+           <option value="Category/OBXD KVR Bank - Leads.fxb">Leads</option>
+           <option value="Category/OBXD KVR Bank - Pads + Strings + Vocalic.fxb">Pads + Strings + Vocalic</option>
+           <option value="Category/Unbenannt.fxb"></option>
+           
+           <!-- <option>OBXD Init Bank.fxb</option>
            <option>OBXd Bank by Rin_Elyran.fxb</option>
            <option>OBXD_AZurStudio.fxb</option>
-           <option>Xenos Soundworks.fxb</option> -->
+           <option>Xenos Soundworks.fxb</option> 
+           <option>AJ- OBXD Basses.fxb</option>
+           <option>AJ- OBXD Pads.fxb</option>
+           <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b.fxb</option>
+           <option>Breeze_Meat-n-Potatoes_Obxd-Bank_rev3b-ALPHA.fxb</option>
+           <option>IW_OBXD Bank 1_Rev 1.11.fxb</option>
+           <option>Joel.fxb</option> -->
           </select>`
     } else if (name === "B") {
         div.innerHTML += `<select id="patches" onchange="patchChange()"></select>`
@@ -153,31 +160,44 @@ for (let control = 7; control >= 0; control--) {
 render();
 document.querySelectorAll('.row .but').forEach(f => {
     Pressure.set('#' + f.id, {
-        start: async function (event) {
+        start: function (event) {
             f.style.backgroundColor = '#000000';
             f.style.opacity = 0.5;
-            if (f.id[0] === 'n') {
-                post('on', f.id, event.pressure);
-            } else {
-                post('control', f.id);
-            }
+            // if (f.id[0] === 'n') {
+            //     post('on', f.id, event.pressure);
+            // } else {
+            //     post('control', f.id);
+            // }
+            if (f.id[0] !== 'n') return
+            var spl = f.id.split('-');
+            var note = parseInt(spl[2]);
             //let note = 48 + notesPositions[i];
-            //return obxd.onMidi([0x90, note, Math.round(127 * event.pressure)]);
+            obxd.onMidi([0x90, note-12, Math.round(Pressure.map(event.pressure, 0, 1, 50, 127))]);
+            obxd.onMidi([0x90, note, Math.round(Pressure.map(event.pressure, 0, 1, 50, 127))]);
+            obxd.onMidi([0x90, note+12, Math.round(Pressure.map(event.pressure, 0, 1, 50, 127))]);
         },
         end: function () {
             f.style.backgroundColor = '#FFFFFF';
             f.style.opacity = 1;
-            post('off', f.id);
+            // post('off', f.id);
             //   o.style.backgroundColor = '#443548';
             //   o.style.opacity = 1;
             //   let note = 48 + notesPositions[i];
-            //return obxd.onMidi([0x80, note, 0]);
+            var spl = f.id.split('-');
+            var note = parseInt(spl[2]);
+            obxd.onMidi([0x80, note+12, 0]);
+            obxd.onMidi([0x80, note, 0]);
+            obxd.onMidi([0x80, note-12, 0]);
         },
         change: function (force, event) {
             //   o.style.backgroundColor = '#5F674B';
             //   o.style.opacity = force;
             //   let note = 48 + notesPositions[i];
-            //return obxd.onMidi([0xa0, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            var spl = f.id.split('-');
+            var note = parseInt(spl[2]);
+            obxd.onMidi([0xa0, note+12, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            obxd.onMidi([0xa0, note, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
+            obxd.onMidi([0xa0, note-12, Math.round(Pressure.map(force, 0, 1, 50, 127))]);
         },
         unsupported: function () {
         }
